@@ -5,6 +5,27 @@ namespace {{ namespace }}\Form\Type{{ entity_namespace ? '\\' ~ entity_namespace
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+{% set typevalues = [] %}
+{% for field, metadata in fields -%}
+  {%- if metadata.type not in typevalues %}
+    {% set typevalues = typevalues|merge([metadata.type]) %}
+    {%- if metadata.type == 'relation' or metadata.type == 'relation_many' %}
+use Lexik\Bundle\FormFilterBundle\Filter\Form\Type\EntityFilterType;
+    {%- elseif metadata.type == 'boolean' %}
+
+use Lexik\Bundle\FormFilterBundle\Filter\Form\Type\BooleanFilterType;
+    {%- elseif metadata.type == 'integer' and field != 'id' %}
+
+use Lexik\Bundle\FormFilterBundle\Filter\Form\Type\NumberFilterType;
+    {%- elseif metadata.type == 'date' or metadata.type == 'datetime' %}
+
+use Lexik\Bundle\FormFilterBundle\Filter\Form\Type\DateFilterType;
+    {%- elseif field != 'id' and ('string' not in typevalues or 'text' not in typevalues) %}
+
+use Lexik\Bundle\FormFilterBundle\Filter\Form\Type\TextFilterType;
+    {%- endif %}
+  {%- endif %}
+{%- endfor %}
 
 class {{ form_class }} extends AbstractType
 {
@@ -17,19 +38,19 @@ class {{ form_class }} extends AbstractType
         {% for field, metadata in fields -%}
         {%- if metadata.type == 'relation' or metadata.type == 'relation_many' %}
 
-            ->add('{{ field }}', 'filter_entity', array('class' => '{{ metadata.entity }}'))
+            ->add('{{ field }}', EntityFilterType::class, array('class' => '{{ metadata.entity }}'))
         {%- elseif metadata.type == 'boolean' %}
 
-            ->add('{{ field }}', 'filter_boolean')
+            ->add('{{ field }}', BooleanFilterType::class)
         {%- elseif metadata.type == 'integer' and field != 'id' %}
 
-            ->add('{{ field }}', 'filter_number')
+            ->add('{{ field }}', NumberFilterType::class)
         {%- elseif metadata.type == 'date' or metadata.type == 'datetime' %}
 
-            ->add('{{ field }}', 'filter_date')
+            ->add('{{ field }}', DateFilterType::class)
         {%- elseif field != 'id' %}
 
-            ->add('{{ field }}', 'filter_text')
+            ->add('{{ field }}', TextFilterType::class)
         {%- endif %}
         {%- endfor %}
 

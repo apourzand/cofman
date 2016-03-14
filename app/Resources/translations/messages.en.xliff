@@ -2,17 +2,25 @@
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
     <file source-language="en" target-language="en" datatype="plaintext" original="file.ext">
         <body>
-            <trans-unit id="Task">
-                <source>Task</source>
-                <target>Task</target>
+            <trans-unit id="Name">
+                <source>Name</source>
+                <target>Name</target>
             </trans-unit>
-            <trans-unit id="Due date">
-                <source>Due date</source>
-                <target>Due date</target>
+            <trans-unit id="Description">
+                <source>Description</source>
+                <target>Description</target>
             </trans-unit>
-            <trans-unit id="Create Task">
-                <source>Create Task</source>
-                <target>Create task</target>
+            <trans-unit id="Created at">
+                <source>Created at</source>
+                <target>Created at</target>
+            </trans-unit>
+            <trans-unit id="Updated at">
+                <source>Updated at</source>
+                <target>Updated at</target>
+            </trans-unit>
+            <trans-unit id="Is active">
+                <source>Is active</source>
+                <target>Is active</target>
             </trans-unit>
         </body>
     </file>

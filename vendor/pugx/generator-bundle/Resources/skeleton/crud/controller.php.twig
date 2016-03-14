@@ -63,4 +63,9 @@ class {{ entity_class }}Controller extends Controller
         {%- include 'crud/actions/delete.php.twig' %}
     {%- endif %}
 
+    protected function getRequest()
+    {
+        return $this->container->get('request_stack')->getCurrentRequest();
+    }
+
 }
