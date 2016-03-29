@@ -29,6 +29,7 @@ class EquipmentController extends Controller
      */
     public function indexAction()
     {
+        // $this->get('app.utils')->dbg(array(1, 2));
         $em = $this->getDoctrine()->getManager();
         $form = $this->createForm(EquipmentFilterType::class);
         if (!is_null($response = $this->saveFilter($form, 'equipment', 'admin_equipment'))) {
