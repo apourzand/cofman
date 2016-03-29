@@ -147,4 +147,9 @@ class Role implements RoleInterface
     {
         return $this->users;
     }
+
+    public function __toString()
+    {
+        return (string) $this->getName();
+    }
 }

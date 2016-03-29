@@ -7,35 +7,35 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use AppBundle\Entity\Equipment;
-use AppBundle\Form\Type\EquipmentType;
-use AppBundle\Form\Type\EquipmentFilterType;
+use AppBundle\Entity\User;
+use AppBundle\Form\Type\UserType;
+use AppBundle\Form\Type\UserFilterType;
 use Symfony\Component\Form\FormInterface;
 use Doctrine\ORM\QueryBuilder;
 
 /**
- * Equipment controller.
+ * User controller.
  *
- * @Route("/admin/equipment")
+ * @Route("/admin/user")
  */
-class EquipmentController extends Controller
+class UserController extends Controller
 {
     /**
-     * Lists all Equipment entities.
+     * Lists all User entities.
      *
-     * @Route("/", name="admin_equipment")
+     * @Route("/", name="admin_user")
      * @Method("GET")
      * @Template()
      */
     public function indexAction()
     {
         $em = $this->getDoctrine()->getManager();
-        $form = $this->createForm(EquipmentFilterType::class);
-        if (!is_null($response = $this->saveFilter($form, 'equipment', 'admin_equipment'))) {
+        $form = $this->createForm(UserFilterType::class);
+        if (!is_null($response = $this->saveFilter($form, 'user', 'admin_user'))) {
             return $response;
         }
-        $qb = $em->getRepository('AppBundle:Equipment')->createQueryBuilder('e');
-        $paginator = $this->filter($form, $qb, 'equipment');
+        $qb = $em->getRepository('AppBundle:User')->createQueryBuilder('u');
+        $paginator = $this->filter($form, $qb, 'user');
 
         return array(
             'form'      => $form->createView(),
@@ -44,109 +44,123 @@ class EquipmentController extends Controller
     }
 
     /**
-     * Finds and displays a Equipment entity.
+     * Finds and displays a User entity.
      *
-     * @Route("/{id}/show", name="admin_equipment_show", requirements={"id"="\d+"})
+     * @Route("/{id}/show", name="admin_user_show", requirements={"id"="\d+"})
      * @Method("GET")
      * @Template()
      */
-    public function showAction(Equipment $equipment)
+    public function showAction(User $user)
     {
-        $deleteForm = $this->createDeleteForm($equipment->getId(), 'admin_equipment_delete');
+        $deleteForm = $this->createDeleteForm($user->getId(), 'admin_user_delete');
 
         return array(
-            'equipment' => $equipment,
+            'user' => $user,
             'delete_form' => $deleteForm->createView(),
         );
     }
 
     /**
-     * Displays a form to create a new Equipment entity.
+     * Displays a form to create a new User entity.
      *
-     * @Route("/new", name="admin_equipment_new")
+     * @Route("/new", name="admin_user_new")
      * @Method("GET")
      * @Template()
      */
     public function newAction()
     {
-        $equipment = new Equipment();
-        $form = $this->createForm(EquipmentType::class, $equipment);
+        $user = new User();
+        $form = $this->createForm(UserType::class, $user);
 
         return array(
-            'equipment' => $equipment,
+            'user' => $user,
             'form'   => $form->createView(),
         );
     }
 
     /**
-     * Creates a new Equipment entity.
+     * Creates a new User entity.
      *
-     * @Route("/create", name="admin_equipment_create")
+     * @Route("/create", name="admin_user_create")
      * @Method("POST")
-     * @Template("AppBundle:Equipment:new.html.twig")
+     * @Template("AppBundle:User:new.html.twig")
      */
     public function createAction(Request $request)
     {
-        $equipment = new Equipment();
-        $form = $this->createForm(EquipmentType::class, $equipment);
+        $user = new User();
+        $form = $this->createForm(UserType::class, $user);
         if ($form->handleRequest($request)->isValid()) {
+
+          // Encode the password
+            $password = $this->get('security.password_encoder')
+                ->encodePassword($user, $user->getPlainPassword());
+            $user->setPassword($password);
+
             $em = $this->getDoctrine()->getManager();
-            $em->persist($equipment);
+            $em->persist($user);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('admin_equipment_show', array('id' => $equipment->getId())));
+            return $this->redirect($this->generateUrl('admin_user_show', array('id' => $user->getId())));
         }
 
         return array(
-            'equipment' => $equipment,
+            'user' => $user,
             'form'   => $form->createView(),
         );
     }
 
     /**
-     * Displays a form to edit an existing Equipment entity.
+     * Displays a form to edit an existing User entity.
      *
-     * @Route("/{id}/edit", name="admin_equipment_edit", requirements={"id"="\d+"})
+     * @Route("/{id}/edit", name="admin_user_edit", requirements={"id"="\d+"})
      * @Method("GET")
      * @Template()
      */
-    public function editAction(Equipment $equipment)
+    public function editAction(User $user)
     {
-        $editForm = $this->createForm(EquipmentType::class, $equipment, array(
-            'action' => $this->generateUrl('admin_equipment_update', array('id' => $equipment->getId())),
+        $editForm = $this->createForm(UserType::class, $user, array(
+            'action' => $this->generateUrl('admin_user_update', array('id' => $user->getId())),
             'method' => 'PUT',
         ));
-        $deleteForm = $this->createDeleteForm($equipment->getId(), 'admin_equipment_delete');
+        $deleteForm = $this->createDeleteForm($user->getId(), 'admin_user_delete');
 
         return array(
-            'equipment' => $equipment,
+            'user' => $user,
             'edit_form'   => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         );
     }
 
     /**
-     * Edits an existing Equipment entity.
+     * Edits an existing User entity.
      *
-     * @Route("/{id}/update", name="admin_equipment_update", requirements={"id"="\d+"})
+     * @Route("/{id}/update", name="admin_user_update", requirements={"id"="\d+"})
      * @Method("PUT")
-     * @Template("AppBundle:Equipment:edit.html.twig")
+     * @Template("AppBundle:User:edit.html.twig")
      */
-    public function updateAction(Equipment $equipment, Request $request)
+    public function updateAction(User $user, Request $request)
     {
-        $editForm = $this->createForm(EquipmentType::class, $equipment, array(
-            'action' => $this->generateUrl('admin_equipment_update', array('id' => $equipment->getId())),
+        $editForm = $this->createForm(UserType::class, $user, array(
+            'action' => $this->generateUrl('admin_user_update', array('id' => $user->getId())),
             'method' => 'PUT',
         ));
         if ($editForm->handleRequest($request)->isValid()) {
+            // Encode the password
+            if ( $user->getPlainPassword() )
+            {
+              $password = $this->get('security.password_encoder')
+                  ->encodePassword($user, $user->getPlainPassword());
+              $user->setPassword($password);
+            }
+
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirect($this->generateUrl('admin_equipment_edit', array('id' => $equipment->getId())));
+            return $this->redirect($this->generateUrl('admin_user_edit', array('id' => $user->getId())));
         }
-        $deleteForm = $this->createDeleteForm($equipment->getId(), 'admin_equipment_delete');
+        $deleteForm = $this->createDeleteForm($user->getId(), 'admin_user_delete');
 
         return array(
-            'equipment' => $equipment,
+            'user' => $user,
             'edit_form'   => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         );
@@ -156,13 +170,13 @@ class EquipmentController extends Controller
     /**
      * Save order.
      *
-     * @Route("/order/{field}/{type}", name="admin_equipment_sort")
+     * @Route("/order/{field}/{type}", name="admin_user_sort")
      */
     public function sortAction($field, $type)
     {
-        $this->setOrder('equipment', $field, $type);
+        $this->setOrder('user', $field, $type);
 
-        return $this->redirect($this->generateUrl('admin_equipment'));
+        return $this->redirect($this->generateUrl('admin_user'));
     }
 
     /**
@@ -255,21 +269,21 @@ class EquipmentController extends Controller
     }
 
     /**
-     * Deletes a Equipment entity.
+     * Deletes a User entity.
      *
-     * @Route("/{id}/delete", name="admin_equipment_delete", requirements={"id"="\d+"})
+     * @Route("/{id}/delete", name="admin_user_delete", requirements={"id"="\d+"})
      * @Method("DELETE")
      */
-    public function deleteAction(Equipment $equipment, Request $request)
+    public function deleteAction(User $user, Request $request)
     {
-        $form = $this->createDeleteForm($equipment->getId(), 'admin_equipment_delete');
+        $form = $this->createDeleteForm($user->getId(), 'admin_user_delete');
         if ($form->handleRequest($request)->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $em->remove($equipment);
+            $em->remove($user);
             $em->flush();
         }
 
-        return $this->redirect($this->generateUrl('admin_equipment'));
+        return $this->redirect($this->generateUrl('admin_user'));
     }
 
     /**

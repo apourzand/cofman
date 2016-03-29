@@ -4,7 +4,7 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
-
+use Doctrine\Common\Collections\ArrayCollection;
 /**
  * @ORM\Table(name="cof_users")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\UserRepository")
@@ -24,7 +24,6 @@ class User implements AdvancedUserInterface, \Serializable
     private $username;
 
     /**
-     * @Assert\NotBlank()
      * @Assert\Length(max=4096)
      */
     private $plainPassword;
@@ -76,6 +75,16 @@ class User implements AdvancedUserInterface, \Serializable
     public function getRoles()
     {
         return $this->roles->toArray();
+    }
+
+    public function getPlainPassword()
+    {
+        return $this->plainPassword;
+    }
+
+    public function setPlainPassword($password)
+    {
+        $this->plainPassword = $password;
     }
 
     public function eraseCredentials()
@@ -215,13 +224,13 @@ class User implements AdvancedUserInterface, \Serializable
     /**
      * Add role
      *
-     * @param \AppBundle\Entity\Role $role
+     * @param Role $role
      *
      * @return User
      */
-    public function addRole(\AppBundle\Entity\Role $role)
+    public function addRole(Role $role)
     {
-        $this->roles[] = $role;
+        $this->roles->add($role);
 
         return $this;
     }
@@ -229,10 +238,15 @@ class User implements AdvancedUserInterface, \Serializable
     /**
      * Remove role
      *
-     * @param \AppBundle\Entity\Role $role
+     * @param Role $role
      */
-    public function removeRole(\AppBundle\Entity\Role $role)
+    public function removeRole(Role $role)
     {
         $this->roles->removeElement($role);
+    }
+
+    public function __toString()
+    {
+        return (string) $this->getUsername();
     }
 }

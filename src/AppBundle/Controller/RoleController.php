@@ -7,35 +7,35 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use AppBundle\Entity\Equipment;
-use AppBundle\Form\Type\EquipmentType;
-use AppBundle\Form\Type\EquipmentFilterType;
+use AppBundle\Entity\Role;
+use AppBundle\Form\Type\RoleType;
+use AppBundle\Form\Type\RoleFilterType;
 use Symfony\Component\Form\FormInterface;
 use Doctrine\ORM\QueryBuilder;
 
 /**
- * Equipment controller.
+ * Role controller.
  *
- * @Route("/admin/equipment")
+ * @Route("/admin/role")
  */
-class EquipmentController extends Controller
+class RoleController extends Controller
 {
     /**
-     * Lists all Equipment entities.
+     * Lists all Role entities.
      *
-     * @Route("/", name="admin_equipment")
+     * @Route("/", name="admin_role")
      * @Method("GET")
      * @Template()
      */
     public function indexAction()
     {
         $em = $this->getDoctrine()->getManager();
-        $form = $this->createForm(EquipmentFilterType::class);
-        if (!is_null($response = $this->saveFilter($form, 'equipment', 'admin_equipment'))) {
+        $form = $this->createForm(RoleFilterType::class);
+        if (!is_null($response = $this->saveFilter($form, 'role', 'admin_role'))) {
             return $response;
         }
-        $qb = $em->getRepository('AppBundle:Equipment')->createQueryBuilder('e');
-        $paginator = $this->filter($form, $qb, 'equipment');
+        $qb = $em->getRepository('AppBundle:Role')->createQueryBuilder('r');
+        $paginator = $this->filter($form, $qb, 'role');
 
         return array(
             'form'      => $form->createView(),
@@ -44,109 +44,109 @@ class EquipmentController extends Controller
     }
 
     /**
-     * Finds and displays a Equipment entity.
+     * Finds and displays a Role entity.
      *
-     * @Route("/{id}/show", name="admin_equipment_show", requirements={"id"="\d+"})
+     * @Route("/{id}/show", name="admin_role_show", requirements={"id"="\d+"})
      * @Method("GET")
      * @Template()
      */
-    public function showAction(Equipment $equipment)
+    public function showAction(Role $role)
     {
-        $deleteForm = $this->createDeleteForm($equipment->getId(), 'admin_equipment_delete');
+        $deleteForm = $this->createDeleteForm($role->getId(), 'admin_role_delete');
 
         return array(
-            'equipment' => $equipment,
+            'role' => $role,
             'delete_form' => $deleteForm->createView(),
         );
     }
 
     /**
-     * Displays a form to create a new Equipment entity.
+     * Displays a form to create a new Role entity.
      *
-     * @Route("/new", name="admin_equipment_new")
+     * @Route("/new", name="admin_role_new")
      * @Method("GET")
      * @Template()
      */
     public function newAction()
     {
-        $equipment = new Equipment();
-        $form = $this->createForm(EquipmentType::class, $equipment);
+        $role = new Role();
+        $form = $this->createForm(RoleType::class, $role);
 
         return array(
-            'equipment' => $equipment,
+            'role' => $role,
             'form'   => $form->createView(),
         );
     }
 
     /**
-     * Creates a new Equipment entity.
+     * Creates a new Role entity.
      *
-     * @Route("/create", name="admin_equipment_create")
+     * @Route("/create", name="admin_role_create")
      * @Method("POST")
-     * @Template("AppBundle:Equipment:new.html.twig")
+     * @Template("AppBundle:Role:new.html.twig")
      */
     public function createAction(Request $request)
     {
-        $equipment = new Equipment();
-        $form = $this->createForm(EquipmentType::class, $equipment);
+        $role = new Role();
+        $form = $this->createForm(RoleType::class, $role);
         if ($form->handleRequest($request)->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $em->persist($equipment);
+            $em->persist($role);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('admin_equipment_show', array('id' => $equipment->getId())));
+            return $this->redirect($this->generateUrl('admin_role_show', array('id' => $role->getId())));
         }
 
         return array(
-            'equipment' => $equipment,
+            'role' => $role,
             'form'   => $form->createView(),
         );
     }
 
     /**
-     * Displays a form to edit an existing Equipment entity.
+     * Displays a form to edit an existing Role entity.
      *
-     * @Route("/{id}/edit", name="admin_equipment_edit", requirements={"id"="\d+"})
+     * @Route("/{id}/edit", name="admin_role_edit", requirements={"id"="\d+"})
      * @Method("GET")
      * @Template()
      */
-    public function editAction(Equipment $equipment)
+    public function editAction(Role $role)
     {
-        $editForm = $this->createForm(EquipmentType::class, $equipment, array(
-            'action' => $this->generateUrl('admin_equipment_update', array('id' => $equipment->getId())),
+        $editForm = $this->createForm(RoleType::class, $role, array(
+            'action' => $this->generateUrl('admin_role_update', array('id' => $role->getId())),
             'method' => 'PUT',
         ));
-        $deleteForm = $this->createDeleteForm($equipment->getId(), 'admin_equipment_delete');
+        $deleteForm = $this->createDeleteForm($role->getId(), 'admin_role_delete');
 
         return array(
-            'equipment' => $equipment,
+            'role' => $role,
             'edit_form'   => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         );
     }
 
     /**
-     * Edits an existing Equipment entity.
+     * Edits an existing Role entity.
      *
-     * @Route("/{id}/update", name="admin_equipment_update", requirements={"id"="\d+"})
+     * @Route("/{id}/update", name="admin_role_update", requirements={"id"="\d+"})
      * @Method("PUT")
-     * @Template("AppBundle:Equipment:edit.html.twig")
+     * @Template("AppBundle:Role:edit.html.twig")
      */
-    public function updateAction(Equipment $equipment, Request $request)
+    public function updateAction(Role $role, Request $request)
     {
-        $editForm = $this->createForm(EquipmentType::class, $equipment, array(
-            'action' => $this->generateUrl('admin_equipment_update', array('id' => $equipment->getId())),
+        $editForm = $this->createForm(RoleType::class, $role, array(
+            'action' => $this->generateUrl('admin_role_update', array('id' => $role->getId())),
             'method' => 'PUT',
         ));
         if ($editForm->handleRequest($request)->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirect($this->generateUrl('admin_equipment_edit', array('id' => $equipment->getId())));
+            return $this->redirect($this->generateUrl('admin_role_edit', array('id' => $role->getId())));
         }
-        $deleteForm = $this->createDeleteForm($equipment->getId(), 'admin_equipment_delete');
+        $deleteForm = $this->createDeleteForm($role->getId(), 'admin_role_delete');
 
         return array(
-            'equipment' => $equipment,
+            'role' => $role,
             'edit_form'   => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         );
@@ -156,13 +156,13 @@ class EquipmentController extends Controller
     /**
      * Save order.
      *
-     * @Route("/order/{field}/{type}", name="admin_equipment_sort")
+     * @Route("/order/{field}/{type}", name="admin_role_sort")
      */
     public function sortAction($field, $type)
     {
-        $this->setOrder('equipment', $field, $type);
+        $this->setOrder('role', $field, $type);
 
-        return $this->redirect($this->generateUrl('admin_equipment'));
+        return $this->redirect($this->generateUrl('admin_role'));
     }
 
     /**
@@ -255,21 +255,21 @@ class EquipmentController extends Controller
     }
 
     /**
-     * Deletes a Equipment entity.
+     * Deletes a Role entity.
      *
-     * @Route("/{id}/delete", name="admin_equipment_delete", requirements={"id"="\d+"})
+     * @Route("/{id}/delete", name="admin_role_delete", requirements={"id"="\d+"})
      * @Method("DELETE")
      */
-    public function deleteAction(Equipment $equipment, Request $request)
+    public function deleteAction(Role $role, Request $request)
     {
-        $form = $this->createDeleteForm($equipment->getId(), 'admin_equipment_delete');
+        $form = $this->createDeleteForm($role->getId(), 'admin_role_delete');
         if ($form->handleRequest($request)->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $em->remove($equipment);
+            $em->remove($role);
             $em->flush();
         }
 
-        return $this->redirect($this->generateUrl('admin_equipment'));
+        return $this->redirect($this->generateUrl('admin_role'));
     }
 
     /**
