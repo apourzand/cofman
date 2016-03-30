@@ -18,6 +18,9 @@ class UserFilterType extends AbstractType
     {
         $builder
 
+            ->add('first_name', TextFilterType::class)
+            ->add('last_name', TextFilterType::class)
+            ->add('username', TextFilterType::class)
             ->add('username', TextFilterType::class)
             ->add('email', TextFilterType::class)
             ->add('isActive', BooleanFilterType::class)

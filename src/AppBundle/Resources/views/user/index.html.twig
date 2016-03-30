@@ -29,6 +29,8 @@
         <thead>
             <tr>
                 <th scope="col">{{ thead('user', 'id', 'Id') }}</th>
+                <th scope="col">{{ thead('user', 'first_name', 'First name') }}</th>
+                <th scope="col">{{ thead('user', 'last_name', 'Last name') }}</th>
                 <th scope="col">{{ thead('user', 'username', 'Username') }}</th>
                 <th scope="col">{{ thead('user', 'email', 'Email') }}</th>
                 <th scope="col">{{ thead('user', 'isActive', 'Isactive') }}</th>
@@ -39,6 +41,8 @@
             {% for user in paginator %}
                 <tr>
                     <td><a href="{{ path('admin_user_show', {id: user.id}) }}">{{ user.id }}</a></td>
+                    <td>{{ user.firstName }}</td>
+                    <td>{{ user.lastName }}</td>
                     <td>{{ user.username }}</td>
                     <td>{{ user.email }}</td>
                     <td>{% if user.isActive %}<i class="fa fa-check-square-o"></i>{% else %}<i class="fa fa-square-o"></i>{% endif %}</td>

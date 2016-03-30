@@ -19,6 +19,21 @@ class User implements AdvancedUserInterface, \Serializable
     private $id;
 
     /**
+     * @ORM\Column(type="string", length=25, unique=false)
+     */
+    private $first_name;
+
+    /**
+     * @ORM\Column(type="string", length=25, unique=false)
+     */
+    private $last_name;
+
+    /**
+     * @ORM\Column(type="string", length=25, unique=false)
+     */
+    private $phone_number;
+
+    /**
      * @ORM\Column(type="string", length=25, unique=true)
      */
     private $username;
@@ -248,5 +263,77 @@ class User implements AdvancedUserInterface, \Serializable
     public function __toString()
     {
         return (string) $this->getUsername();
+    }
+
+    /**
+     * Set firstName
+     *
+     * @param string $firstName
+     *
+     * @return User
+     */
+    public function setFirstName($firstName)
+    {
+        $this->first_name = $firstName;
+
+        return $this;
+    }
+
+    /**
+     * Get firstName
+     *
+     * @return string
+     */
+    public function getFirstName()
+    {
+        return $this->first_name;
+    }
+
+    /**
+     * Set lastName
+     *
+     * @param string $lastName
+     *
+     * @return User
+     */
+    public function setLastName($lastName)
+    {
+        $this->last_name = $lastName;
+
+        return $this;
+    }
+
+    /**
+     * Get lastName
+     *
+     * @return string
+     */
+    public function getLastName()
+    {
+        return $this->last_name;
+    }
+
+    /**
+     * Set phoneNumber
+     *
+     * @param string $phoneNumber
+     *
+     * @return User
+     */
+    public function setPhoneNumber($phoneNumber)
+    {
+        $this->phone_number = $phoneNumber;
+
+        return $this;
+    }
+
+    /**
+     * Get phoneNumber
+     *
+     * @return string
+     */
+    public function getPhoneNumber()
+    {
+        return $this->phone_number;
     }
 }
