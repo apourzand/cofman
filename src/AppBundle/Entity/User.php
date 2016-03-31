@@ -64,10 +64,17 @@ class User implements AdvancedUserInterface, \Serializable
      */
     private $roles;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="Company", inversedBy="users")
+     *
+     */
+    private $companies;
+
     public function __construct()
     {
         $this->isActive = true;
         $this->roles = new ArrayCollection();
+        $this->companies = new ArrayCollection();
     }
 
     public function getUsername()
@@ -335,5 +342,39 @@ class User implements AdvancedUserInterface, \Serializable
     public function getPhoneNumber()
     {
         return $this->phone_number;
+    }
+
+    /**
+     * Add company
+     *
+     * @param \AppBundle\Entity\Company $company
+     *
+     * @return User
+     */
+    public function addCompany(\AppBundle\Entity\Company $company)
+    {
+        $this->companies[] = $company;
+
+        return $this;
+    }
+
+    /**
+     * Remove company
+     *
+     * @param \AppBundle\Entity\Company $company
+     */
+    public function removeCompany(\AppBundle\Entity\Company $company)
+    {
+        $this->companies->removeElement($company);
+    }
+
+    /**
+     * Get companies
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getCompanies()
+    {
+        return $this->companies;
     }
 }

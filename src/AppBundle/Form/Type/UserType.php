@@ -31,6 +31,7 @@ class UserType extends AbstractType
             ->add('phone_number')
             ->add('isActive')
             ->add('roles')
+            ->add('companies')
         ;
     }
 

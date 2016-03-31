@@ -205,4 +205,3 @@ class Equipment
       $this->updatedAt = new \DateTime();
     }
 }
-
