@@ -33,6 +33,12 @@ class Company
      */
     private $users;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="Billingclass")
+     * @ORM\JoinColumn(name="billingclass_id", referencedColumnName="id")
+     */
+    private $billingclass;
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
@@ -109,5 +115,29 @@ class Company
     public function __toString()
     {
         return (string) $this->getName();
+    }
+
+    /**
+     * Set billingclass
+     *
+     * @param \AppBundle\Entity\Billingclass $billingclass
+     *
+     * @return Company
+     */
+    public function setBillingclass(\AppBundle\Entity\Billingclass $billingclass = null)
+    {
+        $this->billingclass = $billingclass;
+
+        return $this;
+    }
+
+    /**
+     * Get billingclass
+     *
+     * @return \AppBundle\Entity\Billingclass
+     */
+    public function getBillingclass()
+    {
+        return $this->billingclass;
     }
 }

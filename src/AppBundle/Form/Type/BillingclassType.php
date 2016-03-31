@@ -6,7 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class CompanyType extends AbstractType
+class BillingclassType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -14,10 +14,9 @@ class CompanyType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-
+        
             ->add('name')
-            ->add('billingclass')
-            ->add('users')
+            ->add('coeff')
         ;
     }
 
@@ -27,7 +26,7 @@ class CompanyType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\Company',
+            'data_class' => 'AppBundle\Entity\Billingclass',
         ));
     }
 
@@ -36,6 +35,6 @@ class CompanyType extends AbstractType
      */
     public function getName()
     {
-        return 'company';
+        return 'billingclass';
     }
 }

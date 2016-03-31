@@ -5,8 +5,10 @@ namespace AppBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Lexik\Bundle\FormFilterBundle\Filter\Form\Type\TextFilterType;
+use Lexik\Bundle\FormFilterBundle\Filter\Form\Type\NumberFilterType;
 
-class CompanyType extends AbstractType
+class BillingclassFilterType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -15,9 +17,8 @@ class CompanyType extends AbstractType
     {
         $builder
 
-            ->add('name')
-            ->add('billingclass')
-            ->add('users')
+            ->add('name', TextFilterType::class)
+            ->add('coeff', NumberFilterType::class)
         ;
     }
 
@@ -27,7 +28,10 @@ class CompanyType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\Company',
+            'data_class'        => 'AppBundle\Entity\Billingclass',
+            'csrf_protection'   => false,
+            'validation_groups' => array('filter'),
+            'method'            => 'GET',
         ));
     }
 
@@ -36,6 +40,6 @@ class CompanyType extends AbstractType
      */
     public function getName()
     {
-        return 'company';
+        return 'billingclass_filter';
     }
 }
