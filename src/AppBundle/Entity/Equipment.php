@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Equipment
@@ -56,6 +57,11 @@ class Equipment
      * @ORM\Column(name="updated_at", type="datetime")
      */
     private $updatedAt;
+
+    /**
+     * @ORM\OneToMany(targetEntity="UserEquipment", mappedBy="equipment")
+     */
+    private $userEquipment;
 
 
     /**
@@ -203,5 +209,51 @@ class Equipment
     public function PreUpdate()
     {
       $this->updatedAt = new \DateTime();
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->userEquipment = new ArrayCollection();
+    }
+
+    /**
+     * Add userEquipment
+     *
+     * @param UserEquipment $userEquipment
+     *
+     * @return Equipment
+     */
+    public function addUserEquipment(\AppBundle\Entity\UserEquipment $userEquipment)
+    {
+        $this->userEquipment[] = $userEquipment;
+
+        return $this;
+    }
+
+    /**
+     * Remove userEquipment
+     *
+     * @param UserEquipment $userEquipment
+     */
+    public function removeUserEquipment(UserEquipment $userEquipment)
+    {
+        $this->userEquipment->removeElement($userEquipment);
+    }
+
+    /**
+     * Get userEquipment
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getUserEquipment()
+    {
+        return $this->userEquipment;
+    }
+
+    public function __toString()
+    {
+        return (string) $this->getName();
     }
 }

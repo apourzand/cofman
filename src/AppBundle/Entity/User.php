@@ -70,11 +70,18 @@ class User implements AdvancedUserInterface, \Serializable
      */
     private $companies;
 
+    /**
+     * @ORM\OneToMany(targetEntity="UserEquipment", mappedBy="user")
+     */
+    private $userEquipment;
+
     public function __construct()
     {
         $this->isActive = true;
         $this->roles = new ArrayCollection();
         $this->companies = new ArrayCollection();
+        $this->userEquipment = new ArrayCollection();
+
     }
 
     public function getUsername()
@@ -376,5 +383,39 @@ class User implements AdvancedUserInterface, \Serializable
     public function getCompanies()
     {
         return $this->companies;
+    }
+
+    /**
+     * Add userEquipment
+     *
+     * @param UserEquipment $userEquipment
+     *
+     * @return User
+     */
+    public function addUserEquipment(UserEquipment $userEquipment)
+    {
+        $this->userEquipment[] = $userEquipment;
+
+        return $this;
+    }
+
+    /**
+     * Remove userEquipment
+     *
+     * @param UserEquipment $userEquipment
+     */
+    public function removeUserEquipment(UserEquipment $userEquipment)
+    {
+        $this->userEquipment->removeElement($userEquipment);
+    }
+
+    /**
+     * Get userEquipment
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getUserEquipment()
+    {
+        return $this->userEquipment;
     }
 }
