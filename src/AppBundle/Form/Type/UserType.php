@@ -7,6 +7,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 
 class UserType extends AbstractType
@@ -30,6 +31,13 @@ class UserType extends AbstractType
             ->add('email')
             ->add('phone_number')
             ->add('isActive')
+            ->add('userEquipment', CollectionType::class, array(
+                'entry_type' => UserEquipmentType::class,
+                'allow_add'    => true,
+                'label_attr' => array('class'=>'label-collection'),
+                'attr' => array('class'=>'collection'),
+                'entry_options' => array('label' => false),
+            ))
             ->add('roles')
             ->add('companies')
         ;
