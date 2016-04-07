@@ -34,9 +34,12 @@ class UserType extends AbstractType
             ->add('userEquipment', CollectionType::class, array(
                 'entry_type' => UserEquipmentType::class,
                 'allow_add'    => true,
+                'by_reference' => false,
+                'allow_delete' => true,
                 'label_attr' => array('class'=>'label-collection'),
                 'attr' => array('class'=>'collection'),
                 'entry_options' => array('label' => false),
+                'constraints' => new \Symfony\Component\Validator\Constraints\Valid(), 
             ))
             ->add('roles')
             ->add('companies')

@@ -6,6 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Glifery\EntityHiddenTypeBundle\Form\Type\EntityHiddenType;
 
 
 class UserEquipmentType extends AbstractType
@@ -20,7 +21,7 @@ class UserEquipmentType extends AbstractType
             ->add('equipment', EntityType::class, array(
                 'class' => 'AppBundle:Equipment',
                 'label' => false,
-                'placeholder' => 'Please choose an equipment', 
+                'placeholder' => 'Please choose an equipment',
                 'empty_data'  => null,
             ))
             ->add('accessprofile', EntityType::class, array(
@@ -28,8 +29,11 @@ class UserEquipmentType extends AbstractType
                 'label' => false,
                 'placeholder' => 'Please choose an access profile',
                 'empty_data'  => null,
+                'attr' => array('class'=>'accessprofile'),
             ))
-//            ->add('user')
+            ->add('user', EntityHiddenType::class, array(
+                'class' => 'AppBundle:User',
+            ))
         ;
     }
 

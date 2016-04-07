@@ -5,8 +5,9 @@ namespace AppBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-        
-use Lexik\Bundle\FormFilterBundle\Filter\Form\Type\TextFilterType;    use Lexik\Bundle\FormFilterBundle\Filter\Form\Type\EntityFilterType;
+
+use Lexik\Bundle\FormFilterBundle\Filter\Form\Type\TextFilterType;
+use Lexik\Bundle\FormFilterBundle\Filter\Form\Type\EntityFilterType;
 class RoleFilterType extends AbstractType
 {
     /**
@@ -15,7 +16,7 @@ class RoleFilterType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-        
+
             ->add('name', TextFilterType::class)
             ->add('role', TextFilterType::class)
             ->add('users', EntityFilterType::class, array('class' => 'AppBundle\Entity\User'))

@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "09a3e4271675c6e315d60002b3398e01",
-    "content-hash": "2e4f33a3bf655c9e759291ae1b5c3021",
+    "hash": "2368c3526ce793e078d99cab2faec3b2",
+    "content-hash": "2a8ae9b8bb29ac962d6ef8b096e7c1a8",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -772,6 +772,47 @@
                 "orm"
             ],
             "time": "2016-01-05 21:34:58"
+        },
+        {
+            "name": "glifery/entity-hidden-type-bundle",
+            "version": "1.2.1",
+            "target-dir": "Glifery/EntityHiddenTypeBundle",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Glifery/EntityHiddenTypeBundle.git",
+                "reference": "656dfe4d1da32a62756333eda4c22bf29b78959e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Glifery/EntityHiddenTypeBundle/zipball/656dfe4d1da32a62756333eda4c22bf29b78959e",
+                "reference": "656dfe4d1da32a62756333eda4c22bf29b78959e",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0",
+                "symfony/framework-bundle": ">=2.3"
+            },
+            "type": "symfony-bundle",
+            "autoload": {
+                "psr-0": {
+                    "Glifery\\EntityHiddenTypeBundle": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Glifery",
+                    "email": "glifery@gmail.com"
+                }
+            ],
+            "description": "Hidden field for Symfony2 entities",
+            "keywords": [
+                "entity hidden form type symfony"
+            ],
+            "time": "2016-02-11 08:22:35"
         },
         {
             "name": "incenteev/composer-parameter-handler",

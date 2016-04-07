@@ -8,7 +8,7 @@
     {{ form_start(edit_form) }}
         {{ form_widget(edit_form) }}
         <p>
-            <button class="btn btn-primary" type="submit"><i class="fa fa-edit"></i> {{ 'Edit'|trans({}, 'admin') }}</button>
+            <button id="edit_button" class="btn btn-primary" type="submit"><i class="fa fa-edit"></i> {{ 'Edit'|trans({}, 'admin') }}</button>
         </p>
     {{ form_end(edit_form) }}
 
@@ -53,7 +53,12 @@
   var $collectionHolder;
 
   $(function() {
-      $('label.label-collection').after('<span class="after-me" style="padding-left:20px"><a class="addForm" href="#"><i class="fa fa-plus"></i><a></span>');
+      $('label.label-collection').after('<span class="after-me" style="padding-left:20px"><a class="addForm" href="#"><i class="fa fa-plus" title="add"></i><a></span>');
+
+      $('.accessprofile').each(function() {
+        $(this).parent().after('<span style="padding-left:20px"><a class="removeForm" href="#"><i class="fa fa-times" title="remove"></i><a></span>');
+      });
+
       // Get the ul that holds the collection of tags
       $collectionHolder = $('div.collection');
 
@@ -68,9 +73,28 @@
           // add a new tag form (see next code block)
           addNewForm($collectionHolder);
       });
-  });
 
-  function addNewForm($collectionHolder) { 
+      $('.removeForm').on('click', function(e) {
+          // prevent the link from creating a "#" on the URL
+          e.preventDefault();
+
+          // add a new tag form (see next code block)
+          var el = $(this).parent().parent().parent();
+          if (el.hasClass('remove'))
+              el.removeClass('remove');
+          else
+              el.addClass('remove');
+
+      });
+
+        $('form[name="user"]').on('submit', function(e){
+          $('.remove').each(function() {
+            $(this).remove();
+          });
+        });
+  });
+ 
+  function addNewForm($collectionHolder) {
     // Get the data-prototype explained earlier
     var prototype = $collectionHolder.data('prototype');
 
@@ -86,6 +110,8 @@
 
     // Display the form in the page in an li, before the "Add a tag" link li
     $('.after-me').after(newForm);
+
+    $('input[id="user_userEquipment_' + index + '_user"]').val({{ user.id }});
 }
 
   </script>

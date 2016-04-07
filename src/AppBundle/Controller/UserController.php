@@ -12,6 +12,8 @@ use AppBundle\Form\Type\UserType;
 use AppBundle\Form\Type\UserFilterType;
 use Symfony\Component\Form\FormInterface;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\Common\Collections\ArrayCollection;
+
 
 /**
  * User controller.
@@ -140,6 +142,14 @@ class UserController extends Controller
      */
     public function updateAction(User $user, Request $request)
     {
+      //$this->get('app.utils')->dbg($request->request->all());
+      $originalUserEquipments = new ArrayCollection();
+
+      // Create an ArrayCollection of the current Tag objects in the database
+      foreach ($user->getUserEquipment() as $userEquipment) {
+          $originalUserEquipments->add($userEquipment);
+      }
+
         $editForm = $this->createForm(UserType::class, $user, array(
             'action' => $this->generateUrl('admin_user_update', array('id' => $user->getId())),
             'method' => 'PUT',
@@ -151,6 +161,14 @@ class UserController extends Controller
               $password = $this->get('security.password_encoder')
                   ->encodePassword($user, $user->getPlainPassword());
               $user->setPassword($password);
+            }
+
+            foreach ($originalUserEquipments as $userEquipment) {
+                if (false === $user->getUserEquipment()->contains($userEquipment)) {
+                    
+                    $user->getUserEquipment()->removeElement($userEquipment);
+                    $this->getDoctrine()->getManager()->remove($userEquipment);
+                }
             }
 
             $this->getDoctrine()->getManager()->flush();

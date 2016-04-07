@@ -3,13 +3,19 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * UserEquipment
  *
- * @ORM\Table(name="user_equipment")
+ * @ORM\Table(name="user_equipment", uniqueConstraints={@ORM\UniqueConstraint(columns={"user_id", "equipment_id"})})
  * @ORM\Entity(repositoryClass="AppBundle\Repository\UserEquipmentRepository")
- */
+ * @UniqueEntity(
+ *     fields={"user", "equipment"},
+ *     errorPath="equipment",
+ *     message="The user has already acces to this equipment."
+ * )
+ */ 
 class UserEquipment
 {
     /**

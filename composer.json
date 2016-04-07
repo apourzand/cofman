@@ -28,7 +28,8 @@
         "sensio/framework-extra-bundle": "^3.0.2",
         "incenteev/composer-parameter-handler": "^2.0",
         "knplabs/knp-paginator-bundle": "^2.5",
-        "lexik/form-filter-bundle": "^5.0"
+        "lexik/form-filter-bundle": "^5.0",
+        "glifery/entity-hidden-type-bundle": "^1.2"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",

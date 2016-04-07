@@ -71,7 +71,7 @@ class User implements AdvancedUserInterface, \Serializable
     private $companies;
 
     /**
-     * @ORM\OneToMany(targetEntity="UserEquipment", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="UserEquipment", mappedBy="user", cascade={"persist", "remove"})
      */
     private $userEquipment;
 
