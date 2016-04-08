@@ -119,6 +119,7 @@ class SlotType extends AbstractType
                     '23h30' => '23.5',
                     '24h00' => '24',
                 ),
+                'attr' => array('class'=>'duration'),
             ))
         ;
     }

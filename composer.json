@@ -29,7 +29,8 @@
         "incenteev/composer-parameter-handler": "^2.0",
         "knplabs/knp-paginator-bundle": "^2.5",
         "lexik/form-filter-bundle": "^5.0",
-        "glifery/entity-hidden-type-bundle": "^1.2"
+        "glifery/entity-hidden-type-bundle": "^1.2",
+        "doctrine/doctrine-migrations-bundle": "^1.0"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",
