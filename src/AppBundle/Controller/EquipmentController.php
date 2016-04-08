@@ -140,6 +140,15 @@ class EquipmentController extends Controller
             'method' => 'PUT',
         ));
         if ($editForm->handleRequest($request)->isValid()) {
+
+            // reorder slotrs
+            $slots = $editForm->get('slots')->getData();
+            usort($slots, function($a, $b) {
+                return strcmp($a["startDate"], $b["startDate"]);
+            });
+            // $this->get('app.utils')->dbg($slots);
+            $equipment->setSlots($slots);
+
             $this->getDoctrine()->getManager()->flush();
 
             return $this->redirect($this->generateUrl('admin_equipment_edit', array('id' => $equipment->getId())));

@@ -11,3 +11,7 @@ and open the template in the editor.
 .remove {
   border: 2px solid lightcoral;
 }
+
+label.label-collection {
+  cursor: pointer;
+}

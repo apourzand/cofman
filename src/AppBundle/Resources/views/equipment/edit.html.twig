@@ -36,6 +36,7 @@
                     <h3>{{ 'Confirm delete'|trans({}, 'admin') }}</h3>
                 </div>
                 <div class="modal-body">
+                    <p>{{ equipment.name }}</p> 
                     <p>{{ 'You are about to delete an item'|trans({}, 'admin') }}, {{ 'this procedure is irreversible'|trans({}, 'admin') }}.</p>
                     <p>{{ 'Do you want to proceed?'|trans({}, 'admin') }}</p>
                 </div>
@@ -46,4 +47,93 @@
             </div>
         </div>
     </div>
+{% endblock %}
+{% block javascripts %}
+  {{ parent() }}
+  <script>
+  var $collectionHolder;
+
+  $(function() {
+      'use strict';
+
+      $('#equipment_slots').addClass('collapse');
+
+      $('label.label-collection').on('click', function(e) {
+          $('#equipment_slots').toggle();
+      });
+
+      $('label.label-collection').after('<span class="after-me" style="padding-left:20px"><a class="addForm" href="#"><i class="fa fa-plus" title="add"></i><a></span>');
+
+      $('.duration').each(function() {
+          $(this).parent().after('<span style="padding-left:20px"><a class="removeForm" href="#"><i class="fa fa-times" title="remove"></i><a></span>');
+      });
+
+      // Get the ul that holds the collection of tags
+      $collectionHolder = $('div.collection');
+
+      // count the current form inputs we have (e.g. 2), use that as the new
+      // index when inserting a new item (e.g. 2)
+      $collectionHolder.data('index', $collectionHolder.find($('[id^="equipment_slots_"][id$="_startDate"]')).length);
+
+      $('.addForm').on('click', function(e) {
+          // prevent the link from creating a "#" on the URL
+          e.preventDefault();
+
+          // add a new tag form (see next code block)
+          addNewForm($collectionHolder);
+      });
+
+      $('.removeForm').on('click', function(e) {
+          // prevent the link from creating a "#" on the URL
+          e.preventDefault();
+
+          // add a new tag form (see next code block)
+          var el = $(this).parent().parent().parent();
+          if (el.hasClass('remove'))
+              el.removeClass('remove');
+          else
+              el.addClass('remove');
+
+      });
+
+        $('form[name="equipment"]').on('submit', function(e){
+          $('.remove').each(function() {
+            $(this).remove();
+          });
+        });
+
+        /* delete confirm */
+        $('form#delete').submit(function (e) {
+            var $form = $(this), $hidden = $form.find('input[name="modal"]');
+            if ($hidden.val() === '0') {
+                e.preventDefault();
+                $('#delete_confirm').modal('show');
+                $('#delete_confirm').find('button.btn-danger').click(function () {
+                    $('#delete_confirm').modal('hide');
+                    $hidden.val('1');
+                    $form.submit();
+                });
+            }
+        });
+  });
+
+  function addNewForm($collectionHolder) {
+    // Get the data-prototype explained earlier
+    var prototype = $collectionHolder.data('prototype');
+
+    // get the new index
+    var index = $collectionHolder.data('index');
+
+    // Replace '__name__' in the prototype's HTML to
+    // instead be a number based on how many items we have
+    var newForm = prototype.replace(/__name__/g, index);
+
+    // increase the index with one for the next item
+    $collectionHolder.data('index', index + 1);
+
+    // Display the form in the page in an li, before the "Add a tag" link li
+    $('.after-me').after(newForm);
+}
+
+  </script>
 {% endblock %}

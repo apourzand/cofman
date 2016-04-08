@@ -63,6 +63,12 @@ class Equipment
      */
     private $userEquipment;
 
+    /**
+     * @var array
+     *
+     * @ORM\Column(name="slots", type="json_array")
+     */
+    private $slots;
 
     /**
      * Get id
@@ -255,5 +261,29 @@ class Equipment
     public function __toString()
     {
         return (string) $this->getName();
+    }
+
+    /**
+     * Set slots
+     *
+     * @param array $slots
+     *
+     * @return Equipment
+     */
+    public function setSlots($slots)
+    {
+        $this->slots = $slots;
+
+        return $this;
+    }
+
+    /**
+     * Get slots
+     *
+     * @return array
+     */
+    public function getSlots()
+    {
+        return $this->slots;
     }
 }
