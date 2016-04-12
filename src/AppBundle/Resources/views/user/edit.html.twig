@@ -53,6 +53,9 @@
   var $collectionHolder;
 
   $(function() {
+
+     $('select').select2();
+
       $('label.label-collection').after('<span class="after-me" style="padding-left:20px"><a class="addForm" href="#"><i class="fa fa-plus" title="add"></i><a></span>');
 
       $('.accessprofile').each(function() {
@@ -93,7 +96,7 @@
           });
         });
   });
- 
+
   function addNewForm($collectionHolder) {
     // Get the data-prototype explained earlier
     var prototype = $collectionHolder.data('prototype');
