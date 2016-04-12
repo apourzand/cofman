@@ -75,12 +75,18 @@ class User implements AdvancedUserInterface, \Serializable
      */
     private $userEquipment;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Booking", mappedBy="user", cascade={"persist", "remove"})
+     */
+    private $bookings;
+
     public function __construct()
     {
         $this->isActive = true;
         $this->roles = new ArrayCollection();
         $this->companies = new ArrayCollection();
         $this->userEquipment = new ArrayCollection();
+        $this->bookings = new ArrayCollection();
 
     }
 
@@ -417,5 +423,39 @@ class User implements AdvancedUserInterface, \Serializable
     public function getUserEquipment()
     {
         return $this->userEquipment;
+    }
+
+    /**
+     * Add booking
+     *
+     * @param \AppBundle\Entity\Booking $booking
+     *
+     * @return User
+     */
+    public function addBooking(\AppBundle\Entity\Booking $booking)
+    {
+        $this->bookings[] = $booking;
+
+        return $this;
+    }
+
+    /**
+     * Remove booking
+     *
+     * @param \AppBundle\Entity\Booking $booking
+     */
+    public function removeBooking(\AppBundle\Entity\Booking $booking)
+    {
+        $this->bookings->removeElement($booking);
+    }
+
+    /**
+     * Get bookings
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getBookings()
+    {
+        return $this->bookings;
     }
 }

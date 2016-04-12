@@ -71,6 +71,11 @@ class Equipment
     private $slots;
 
     /**
+     * @ORM\OneToMany(targetEntity="Booking", mappedBy="equipment")
+     */
+    private $bookings;
+
+    /**
      * Get id
      *
      * @return int
@@ -222,6 +227,7 @@ class Equipment
     public function __construct()
     {
         $this->userEquipment = new ArrayCollection();
+        $this->bookings = new ArrayCollection();
     }
 
     /**
@@ -285,5 +291,39 @@ class Equipment
     public function getSlots()
     {
         return $this->slots;
+    }
+
+    /**
+     * Add booking
+     *
+     * @param \AppBundle\Entity\Booking $booking
+     *
+     * @return Equipment
+     */
+    public function addBooking(\AppBundle\Entity\Booking $booking)
+    {
+        $this->bookings[] = $booking;
+
+        return $this;
+    }
+
+    /**
+     * Remove booking
+     *
+     * @param \AppBundle\Entity\Booking $booking
+     */
+    public function removeBooking(\AppBundle\Entity\Booking $booking)
+    {
+        $this->bookings->removeElement($booking);
+    }
+
+    /**
+     * Get bookings
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getBookings()
+    {
+        return $this->bookings;
     }
 }
