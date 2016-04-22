@@ -1,0 +1,77 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <h2>Booking</h2>
+    <div class="row">
+      <div class="col-md-8">
+      {{ form_start(form) }}
+      {{ form_widget(form) }}
+      {{ form_end(form) }}
+      </div>
+    </div>
+      <div>haha {{form.startday.vars.value}}</div>
+    <div id="calendar">
+    {% if slots is defined and slots %}
+        {% include 'booking/booking.html.twig' with {slots: slots, startday: form.startday.vars.value} %}
+    {% endif %}
+    </div>
+
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+    $(function() {
+      refreshTable();
+      $('#datepicker').datetimepicker({
+        inline: true,
+        format: 'YYYY-MM-DD',
+        defaultDate: moment("{{form.startday.vars.value}}", 'YYYY-MM-DD'),
+        minDate: moment()
+        }).on('dp.change', function(e) {
+          var d = moment(e.date).format('YYYY-MM-DD');
+          $('#form_startday').val(d);
+          refreshTable();
+      });
+
+      $('#form_equipment').change(function(e){
+        refreshTable();
+      });
+
+      $(document).on("click",".slot.free, .slot.booked",function(e){
+
+        $("body").prepend("<div class=\"overlay\"></div>");
+
+        $(".overlay").css({
+            "position": "absolute",
+            "width": $(document).width(),
+            "height": $(document).height(),
+            "z-index": 99999,
+        }).fadeTo(0, 0.3);
+
+        var self = $(this);
+
+        self.html('loading ...').fadeTo( "slow", 0.33 );;
+        $.ajax({
+          type:'POST',
+          url: '{{ path('ajax_booking') }}',
+          data: self.data('booking'),
+          success: function(response) {
+            refreshTable();
+            $('.overlay').remove();
+          }
+        });
+      });
+    });
+
+    function refreshTable() {
+      // $('#calendar').html('<center><img src="{{ asset('assets/images/ajax-loader.gif') }}" /></center>');
+      $.ajax({
+        type:'POST',
+        url: '{{ path('ajax_calendar') }}',
+        data: {equipmentId: $('#form_equipment').val(), startday: $('#form_startday').val() },
+        success: function(response) {
+          $('#calendar').html(response);
+        }
+      });
+    }
+    </script>
+{% endblock %}

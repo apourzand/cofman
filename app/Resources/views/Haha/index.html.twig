@@ -55,8 +55,29 @@
       </tr>
     </tbody>
   </table>
-  {{ form_start(form) }}
-  {{ form_widget(form) }}
-  {{ form_end(form) }}
+  <div class="row">
+    <div class="col-md-8">
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    {{ form_end(form) }}
+    </div>
+    <div class="col-md-4">
+      <div id="datepicker"></div>
+    </div>
+  </div>
 </div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+      <script type="text/javascript">
+          $(function () {
+              $('.datepicker').datetimepicker()
+              $('#datepicker').datetimepicker({
+                  inline: true,
+                  stepping: 30,
+                  format: 'HH:mm',
+                  minDate: moment().hour(0).minutes(29)
+              });
+          });
+      </script>
 {% endblock %}

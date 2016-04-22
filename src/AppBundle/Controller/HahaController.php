@@ -20,12 +20,15 @@ class HahaController extends Controller
         $data = array();
         $form = $this->createFormBuilder($data)
             ->add('task', TextType::class)
-            ->add('dueDate', DateType::class)
+            ->add('dueDate', TextType::class, array(
+                'attr' => array(
+                    'class' => 'datepicker'
+            )))
             ->add('save', SubmitType::class, array(
                 'label' => 'Create Task',
                 'attr' => array(
                     'class' => 'btn-primary'
-                )))
+            )))
             ->getForm();
 
         return $this->render('haha/index.html.twig', array(

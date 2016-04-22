@@ -5,6 +5,7 @@
         <title>{% block title %}Welcome!{% endblock %}</title>
         {% block stylesheets %}
             <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.css') }}">
+            <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datetimepicker.css') }}">
             <link rel="stylesheet" href="{{ asset('assets/css/font-awesome.css') }}">
             <link rel="stylesheet" href="{{ asset('assets/css/simple-sidebar.css') }}">
             <link rel="stylesheet" href="{{ asset('assets/css/select2.min.css') }}">
@@ -15,32 +16,11 @@
     <body>
 
         <div id="wrapper">
-            <!-- Sidebar -->
-            <div id="sidebar-wrapper">
-                <ul class="sidebar-nav">
-                    <li class="sidebar-brand">
-                        <a href="#">
-                            Start Bootstrap
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <i class="fa fa-tachometer"></i> Dashboard
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ path('admin_user') }}">
-                          <i class="fa fa-user"></i> Users
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ path('admin_equipment') }}">
-                          <i class="fa fa-server"></i> Equipments
-                        </a>
-                    </li>
-                </ul>
-            </div>
-            <!-- /#sidebar-wrapper -->
+        {% if '/admin/' in path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) %}
+            {% include 'admin_sb.html.twig' %}
+        {% else %}
+           {% include 'client_sb.html.twig' %}
+        {% endif %}
 
             <!-- Page Content -->
             <div id="page-content-wrapper">
@@ -60,6 +40,8 @@
         {% block javascripts %}
             <script src="{{ asset('assets/js/jquery.js') }}"></script>
             <script src="{{ asset('assets/js/bootstrap.js') }}"></script>
+            <script src="{{ asset('assets/js/moment.min.js') }}"></script>
+            <script src="{{ asset('assets/js/bootstrap-datetimepicker.min.js') }}"></script>
             <script src="{{ asset('assets/js/select2.min.js') }}"></script>
             <!-- Menu Toggle Script -->
             <script>

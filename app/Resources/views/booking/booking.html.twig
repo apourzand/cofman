@@ -1,0 +1,54 @@
+{% set profile = app.session.get('profile') %}
+{% set equipmentId = app.session.get('equipmentId') %}
+
+{% macro slotdiv(profile, equipmentId, startday, bookings, slot, currentSlotDate) %}
+    {% if slot.startDate|date("H:i:s") <= profile[equipmentId]['startTime'] or slot.startDate|date("H:i:s") > profile[equipmentId]['endTime'] %}
+        {% set slotClass = 'forbidden' %}
+        {% set slotData = '' %}
+        {% if bookings[currentSlotDate] is defined %}
+            {% set slotText = bookings[currentSlotDate]['label'] %}
+        {% else %}
+            {% set slotText = '-' %}
+        {% endif %}
+    {% else %}
+        {% if bookings[currentSlotDate] is defined %}
+            {% if app.user.username == bookings[currentSlotDate]['label'] %}
+                {% set slotClass = 'booked' %}
+                {% set slotText = bookings[currentSlotDate]['label'] %}
+                {% set slotData = {"id": bookings[currentSlotDate]['id']}|json_encode %}
+            {% else %}
+                {% set slotClass = 'otherbooked' %}
+                {% set slotText = bookings[currentSlotDate]['label'] %}
+                {% set slotData = '' %}
+            {% endif %}
+        {% else %}
+            {% set slotClass = 'free' %}
+            {% set slotText = '+' %}
+            {% set slotData = {"startsAt": currentSlotDate, "duration": slot.duration}|json_encode  %}
+        {% endif %}
+    {% endif %}
+    <div id="" class="col-md-1 slot {{ slotClass }}" data-booking='{{ slotData }}'>
+      {{ slotText }}
+    </div>
+{% endmacro %}
+
+{% from _self import slotdiv %}
+
+<div class="container">
+  <div class="row">
+      <div class="col-md-1 slot-day">grid</div>
+      {% for i in 0..10 %}
+          <div class="col-md-1 slot-day">{{ startday|date_modify("+" ~ i ~ "day")|date("m/d/Y") }}</div>
+      {% endfor %}
+  </div>
+  {% for slot in slots %}
+  <div class="row">
+      {% set currentSlot = slot.startDate|date("H:i") %}
+      <div class="col-md-1 slot-time">{{ currentSlot }}</div>
+      {% for i in 0..10 %}
+          {% set currentSlotDate = startday|date_modify("+" ~ i ~ "day")|date("Y-m-d") ~ " " ~ slot.startDate|date("H:i:s") %}
+          {{ slotdiv(profile, equipmentId, startday, bookings, slot, currentSlotDate) }}
+      {% endfor %}
+  </div>
+  {% endfor %}
+</div>

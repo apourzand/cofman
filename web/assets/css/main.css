@@ -15,3 +15,43 @@ and open the template in the editor.
 label.label-collection {
   cursor: pointer;
 }
+
+.bootstrap-datetimepicker-widget {
+    background: #cfcfcf;
+    width: 200px;
+    border-radius: 6px;
+}
+
+/* booking slots*/
+div[class*=slot] {
+  border-right: 1px solid #ccc;
+  border-bottom:1px solid #ccc;
+}
+
+div[class*=slot]:first-child {
+  border-left: 1px solid #ccc;
+}
+
+.col-md-1.slot {
+  cursor: pointer;
+}
+
+.col-md-1.slot-day, .col-md-1.slot-time {
+  background: #efefef;
+}
+
+.col-md-1.free {
+  background: #aaffaa;
+}
+
+.col-md-1.forbidden {
+  background: #9f9f9f;
+}
+
+.col-md-1.booked, .col-md-1.otherbooked {
+  background: lightsalmon;
+}
+
+#calendar {
+  font-size: 9pt;
+}

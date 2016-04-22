@@ -22,7 +22,6 @@
 
 {% block body %}
     <h1>{{ '%entity% list'|trans({'%entity%': 'Equipment'}, 'admin') }}</h1>
-
     {% include 'AppBundle:Equipment:filter.html.twig' with {form: form} %}
 
     <table class="table table-striped table-hover table-bordered records_list">

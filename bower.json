@@ -1,8 +1,9 @@
 {
-    "name": "cofman",
-    "dependencies": {
-        "jquery": "1.11.*",
-        "bootstrap": "3.1.*",
-        "font-awesome": "4.1.*"
-    }
+  "name": "cofman",
+  "dependencies": {
+    "jquery": "1.11.*",
+    "bootstrap": "3.1.*",
+    "font-awesome": "4.1.*",
+    "eonasdan-bootstrap-datetimepicker": "^4.17.37"
+  }
 }

@@ -15,7 +15,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *     errorPath="equipment",
  *     message="The user has already acces to this equipment."
  * )
- */ 
+ */
 class UserEquipment
 {
     /**
@@ -148,4 +148,9 @@ class UserEquipment
 
         return $this;
     }
+    public function __toString()
+    {
+        return (string) $this->getEquipment() . ' (' . $this->getAccessprofile() . ')';
+    }
+
 }
